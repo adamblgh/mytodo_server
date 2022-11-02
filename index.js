@@ -10,7 +10,7 @@ app.use(express.json())
 
 app.use(cors())
 
-app.get('/name',(request,response)=>{
+app.get('/all',(request,response)=>{
     console.log("ok")
     db.query('select * from todos',(error, results)=>{
         if (error)
@@ -30,7 +30,26 @@ app.post('/add',(request,response)=>{
 })
 app.delete('/delete/:id',(request,response)=>{
     const {id} = request.params
-    db.query('delete from todos where name=?',[id],(error, results)=>{
+    db.query('delete from todos where id=?',[id],(error, results)=>{
+        if (error)
+            console.log(error)
+        else 
+            response.send(results)
+    })
+})
+
+app.put('/update/:id',(request,response)=>{
+    const {id} = request.params
+    db.query('update todos set status=NOT status where id=?',[id],(error, results)=>{
+        if (error)
+            console.log(error)
+        else 
+            response.send(results)
+    })
+})
+
+app.delete('/deleteall',(request,response)=>{
+    db.query('delete from todos',(error, results)=>{
         if (error)
             console.log(error)
         else 
